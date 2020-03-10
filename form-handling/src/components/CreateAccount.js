@@ -28,13 +28,18 @@ export default class CreateAccount extends Component {
     // console.log("Account ", account);
     Axios.post(url, account)
       .then(response => {
-        console.log("Response ", response);
-        this.setState({
-          email: "",
-          password: "",
-          name: "",
-          phoneno: ""
-        });
+        // console.log("Response ", response);
+        if(response.status === 200){
+          console.log("props",this.props)
+          this.props.history.push("/showaccounts");
+          this.setState({
+            email: "",
+            password: "",
+            name: "",
+            phoneno: ""
+          });
+        }
+       
       })
       .catch(err => {
         console.log("Error ", err);
