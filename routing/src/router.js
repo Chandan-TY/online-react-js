@@ -1,12 +1,14 @@
 import React from "react";
-import { Link,Route } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import MyApp from "./components/MyApp";
 import Home from "./components/Home";
 import PersonList from "./components/PersonList";
 import PersonDetail from "./components/PersonDetail";
+import Login from "./components/Login";
+import { LoginConsumer } from "./context-api/loginContext";
 
 export const routing = (
-    <div>
+  <div>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
         MyApp
@@ -29,16 +31,41 @@ export const routing = (
               Home <span className="sr-only">(current)</span>
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/personlist">
-              Person List
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/persondetail">
-              Person Detail
-            </Link>
-          </li>
+          {
+            <LoginConsumer>
+              {info => {
+                if (info.login) {
+                  return (
+                    <div>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/personlist">
+                          Person List
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/persondetail">
+                          Person Detail
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/login">
+                          Logout
+                        </Link>
+                      </li>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">
+                        Login
+                      </Link>
+                    </li>
+                  );
+                }
+              }}
+            </LoginConsumer>
+          }
         </ul>
       </div>
     </nav>
@@ -47,5 +74,6 @@ export const routing = (
     <Route path="/home" component={Home} />
     <Route path="/personlist" component={PersonList} />
     <Route path="/persondetail" component={PersonDetail} />
-    </div>
+    <Route path="/login" component={Login} />
+  </div>
 );
